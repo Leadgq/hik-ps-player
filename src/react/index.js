@@ -13,7 +13,11 @@ const STYLE = `
   border-radius: 4px; cursor: pointer;
 }
 .hik-ps-react__played { height: 100%; background: #3ba9ff; }
-.hik-ps-react__time { padding: 8px 12px 12px; text-align: right; font-size: 13px; }
+.hik-ps-react__bar { display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 8px 12px 12px; }
+.hik-ps-react__time { font-size: 13px; }
+.hik-ps-react__fullscreen { border: 0; border-radius: 4px; padding: 4px 10px; background: #3ba9ff; color: #fff; font-size: 13px; cursor: pointer; }
+.hik-ps-react:fullscreen { display: flex; flex-direction: column; width: 100%; height: 100%; background: #000; }
+.hik-ps-react:fullscreen .hik-ps-react__stage { flex: 1; height: auto; min-height: 0; }
 `
 
 function formatTime(sec) {
@@ -28,9 +32,11 @@ export function HikPsVideo({ src = '', assetBase = '/h265web/' }) {
   const box = useRef(null)
   const playerRef = useRef(null)
   const tokenRef = useRef(0)
+  const root = useRef(null)
   const [status, setStatus] = useState('')
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
+  const [isFullscreen, setIsFullscreen] = useState(false)
 
   useEffect(() => {
     const token = ++tokenRef.current
@@ -74,6 +80,21 @@ export function HikPsVideo({ src = '', assetBase = '/h265web/' }) {
     }
   }, [src, assetBase])
 
+  useEffect(() => {
+    const sync = () => setIsFullscreen(document.fullscreenElement === root.current)
+    document.addEventListener('fullscreenchange', sync)
+    return () => document.removeEventListener('fullscreenchange', sync)
+  }, [])
+
+  async function toggleFullscreen() {
+    if (!root.current) return
+    if (document.fullscreenElement === root.current) {
+      await document.exitFullscreen()
+      return
+    }
+    await root.current.requestFullscreen()
+  }
+
   function onSeek(event) {
     const player = playerRef.current
     if (!player || !(duration > 0)) return
@@ -88,7 +109,7 @@ export function HikPsVideo({ src = '', assetBase = '/h265web/' }) {
 
   return h(
     'div',
-    { className: 'hik-ps-react', onClick: () => playerRef.current?.toggle() },
+    { ref: root, className: 'hik-ps-react', onClick: () => playerRef.current?.toggle() },
     h('style', null, STYLE),
     h('div', { ref: box, className: 'hik-ps-react__stage' }),
     status ? h('p', { className: 'hik-ps-react__status' }, status) : null,
@@ -105,8 +126,24 @@ export function HikPsVideo({ src = '', assetBase = '/h265web/' }) {
     ),
     h(
       'div',
-      { className: 'hik-ps-react__time' },
-      `${formatTime(currentTime)} / ${duration ? formatTime(duration) : '--:--:--'}`,
+      { className: 'hik-ps-react__bar' },
+      h(
+        'div',
+        { className: 'hik-ps-react__time' },
+        `${formatTime(currentTime)} / ${duration ? formatTime(duration) : '--:--:--'}`,
+      ),
+      h(
+        'button',
+        {
+          type: 'button',
+          className: 'hik-ps-react__fullscreen',
+          onClick: (event) => {
+            event.stopPropagation()
+            toggleFullscreen()
+          },
+        },
+        isFullscreen ? '退出全屏' : '全屏',
+      ),
     ),
   )
 }

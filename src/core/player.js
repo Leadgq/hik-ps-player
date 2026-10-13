@@ -117,6 +117,7 @@ class HikPlayer {
       return
     }
     this.h265 = player
+    this.hookAdaptiveScreen(player)
     this.playbackBase = options.baseTime || 0
     this.currentTime = this.playbackBase
     this.loadingFirstFrame = true
@@ -130,6 +131,7 @@ class HikPlayer {
       if (options.resume === false) {
         this.playing = false
         this.syncClock()
+        this.fitSurface()
         return
       }
       try {
@@ -139,6 +141,7 @@ class HikPlayer {
       } catch {
         this.emitStatus('点击画面开始播放')
       }
+      this.fitSurface()
     }
     player.on_play_time = (seconds) => {
       if (token !== this.token) return
@@ -164,6 +167,52 @@ class HikPlayer {
     })
     player._ps_start_offset = options.startOffset || 0
     player.load_media(url)
+  }
+
+  hookAdaptiveScreen(player) {
+    if (!player || player.__surfaceHooked) return
+    const original = player._auto_adaptive_screen?.bind(player)
+    if (!original) return
+    player.__surfaceHooked = true
+    player.__adaptiveScreen = original
+    player._auto_adaptive_screen = (...args) => {
+      const result = original(...args)
+      const canvas = this.container?.querySelector('canvas')
+      if (canvas) canvas.style.setProperty('margin', '0', 'important')
+      this.fitSurface()
+      return result
+    }
+  }
+
+  fitSurface() {
+    const host = this.container
+    if (!host || this.fitting) return
+    this.fitting = true
+    try {
+      const width = Math.max(1, Math.floor(host.clientWidth))
+      const height = Math.max(1, Math.floor(host.clientHeight))
+      const canvas = host.querySelector('canvas')
+      if (canvas) {
+        canvas.style.setProperty('position', 'absolute', 'important')
+        canvas.style.setProperty('left', '0', 'important')
+        canvas.style.setProperty('top', '0', 'important')
+        canvas.style.setProperty('margin', '0', 'important')
+        canvas.style.setProperty('width', `${width}px`, 'important')
+        canvas.style.setProperty('height', `${height}px`, 'important')
+        canvas.style.setProperty('object-fit', 'contain', 'important')
+      }
+      const player = this.h265
+      if (!player) return
+      player._player_width = width
+      player._player_height = height
+      if (player._player_box) {
+        player._player_box.style.setProperty('width', `${width}px`, 'important')
+        player._player_box.style.setProperty('height', `${height}px`, 'important')
+      }
+      player._vr?.resize?.(width, height)
+    } finally {
+      this.fitting = false
+    }
   }
 
   toggle() {

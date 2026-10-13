@@ -12,7 +12,11 @@ const STYLE = `
   border-radius: 4px; cursor: pointer;
 }
 .hik-ps-vue2__played { height: 100%; background: #3ba9ff; }
-.hik-ps-vue2__time { padding: 8px 12px 12px; text-align: right; font-size: 13px; }
+.hik-ps-vue2__bar { display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 8px 12px 12px; }
+.hik-ps-vue2__time { font-size: 13px; }
+.hik-ps-vue2__fullscreen { border: 0; border-radius: 4px; padding: 4px 10px; background: #3ba9ff; color: #fff; font-size: 13px; cursor: pointer; }
+.hik-ps-vue2:fullscreen { display: flex; flex-direction: column; width: 100%; height: 100%; background: #000; }
+.hik-ps-vue2:fullscreen .hik-ps-vue2__stage { flex: 1; height: auto; min-height: 0; }
 `
 
 function formatTime(sec) {
@@ -35,6 +39,7 @@ export const HikPsVideo = {
       currentTime: 0,
       duration: 0,
       openToken: 0,
+      isFullscreen: false,
     }
   },
   created() {
@@ -42,8 +47,13 @@ export const HikPsVideo = {
   },
   mounted() {
     this.open(this.src)
+    this.onFullscreenChange = () => {
+      this.isFullscreen = document.fullscreenElement === this.$el
+    }
+    document.addEventListener('fullscreenchange', this.onFullscreenChange)
   },
   beforeDestroy() {
+    document.removeEventListener('fullscreenchange', this.onFullscreenChange)
     this.openToken += 1
     const player = this.player
     this.player = null
@@ -92,6 +102,13 @@ export const HikPsVideo = {
         if (token === this.openToken) this.status = error?.message || '视频加载失败'
       }
     },
+    async toggleFullscreen() {
+      if (document.fullscreenElement === this.$el) {
+        await document.exitFullscreen()
+        return
+      }
+      await this.$el.requestFullscreen()
+    },
     onSeek(event) {
       if (!this.player || !(this.duration > 0)) return
       const rect = event.currentTarget.getBoundingClientRect()
@@ -121,7 +138,19 @@ export const HikPsVideo = {
       }, [
         h('div', { class: 'hik-ps-vue2__played', style: { width: played } }),
       ]),
-      h('div', { class: 'hik-ps-vue2__time' }, `${formatTime(this.currentTime)} / ${this.duration ? formatTime(this.duration) : '--:--:--'}`),
+      h('div', { class: 'hik-ps-vue2__bar' }, [
+        h('div', { class: 'hik-ps-vue2__time' }, `${formatTime(this.currentTime)} / ${this.duration ? formatTime(this.duration) : '--:--:--'}`),
+        h('button', {
+          class: 'hik-ps-vue2__fullscreen',
+          attrs: { type: 'button' },
+          on: {
+            click: (event) => {
+              event.stopPropagation()
+              this.toggleFullscreen()
+            },
+          },
+        }, this.isFullscreen ? '退出全屏' : '全屏'),
+      ]),
     ])
   },
 }
