@@ -1,6 +1,6 @@
 {
   "name": "hik-ps-player",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "private": false,
   "type": "module",
   "packageManager": "pnpm@10.30.3",
@@ -14,12 +14,13 @@
   "scripts": {
     "dev": "pnpm --filter @hik-ps/playground dev",
     "dev:react": "pnpm --filter @hik-ps/playground-react dev",
-    "build": "turbo run build && node scripts/collect-dist.mjs"
+    "build": "turbo run build && node scripts/collect-dist.mjs",
+    "prepublishOnly": "pnpm build"
   },
+  "main": "./dist/index.js",
   "files": [
     "dist",
-    "assets",
-    "README.md"
+    "h265web"
   ],
   "devDependencies": {
     "turbo": "^2.5.4"

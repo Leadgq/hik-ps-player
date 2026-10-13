@@ -8,7 +8,7 @@ const playgroundRoot = path.dirname(fileURLToPath(import.meta.url))
 export default defineConfig({
   root: playgroundRoot,
   plugins: [vue()],
-  publicDir: path.resolve(playgroundRoot, '../dist'),
+  publicDir: path.resolve(playgroundRoot, '../assets'),
   server: {
     port: 5188,
     host: '127.0.0.1',

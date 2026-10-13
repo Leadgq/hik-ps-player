@@ -1,6 +1,7 @@
 import { cpSync, mkdirSync, rmSync } from 'node:fs'
 
 rmSync('dist', { recursive: true, force: true })
+rmSync('h265web', { recursive: true, force: true })
 mkdirSync('dist', { recursive: true })
 
 const files = [
@@ -14,5 +15,4 @@ for (const [from, to] of files) {
   cpSync(from, to)
 }
 
-cpSync('README.md', 'dist/README.md')
-cpSync('assets/h265web', 'dist/h265web', { recursive: true })
+cpSync('assets/h265web', 'h265web', { recursive: true })

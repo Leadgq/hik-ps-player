@@ -1,0 +1,14 @@
+node_modules
+packages
+playground
+playground-react
+scripts
+assets
+.turbo
+.git
+.vite
+*.log
+AGENTS.md
+pnpm-workspace.yaml
+pnpm-lock.yaml
+turbo.json
