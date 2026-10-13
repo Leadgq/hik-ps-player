@@ -1,0 +1,112 @@
+import { createElement as h, useEffect, useRef, useState } from 'react'
+import { createHikPlayer } from '../core/player.js'
+
+const STYLE = `
+.hik-ps-react { position: relative; width: 100%; background: #000; color: #fff; }
+.hik-ps-react__stage { width: 100%; height: 450px; }
+.hik-ps-react__status {
+  position: absolute; left: 0; right: 0; top: 180px; margin: 0;
+  text-align: center; pointer-events: none;
+}
+.hik-ps-react__timeline {
+  height: 8px; margin: 12px 12px 0; background: #d9e6f2;
+  border-radius: 4px; cursor: pointer;
+}
+.hik-ps-react__played { height: 100%; background: #3ba9ff; }
+.hik-ps-react__time { padding: 8px 12px 12px; text-align: right; font-size: 13px; }
+`
+
+function formatTime(sec) {
+  const value = Math.max(0, Number(sec) || 0)
+  const hours = Math.floor(value / 3600)
+  const minutes = Math.floor((value % 3600) / 60)
+  const seconds = Math.floor(value % 60)
+  return [hours, minutes, seconds].map((n) => String(n).padStart(2, '0')).join(':')
+}
+
+export function HikPsVideo({ src = '', assetBase = '/h265web/' }) {
+  const box = useRef(null)
+  const playerRef = useRef(null)
+  const tokenRef = useRef(0)
+  const [status, setStatus] = useState('')
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
+
+  useEffect(() => {
+    const token = ++tokenRef.current
+    let cancelled = false
+    ;(async () => {
+      await playerRef.current?.destroy()
+      if (cancelled || token !== tokenRef.current) return
+      playerRef.current = null
+      setCurrentTime(0)
+      setDuration(0)
+      if (!src || !box.current) return
+      try {
+        const next = await createHikPlayer({
+          container: box.current,
+          url: src,
+          assetBase,
+          onStatus: (text) => {
+            if (token === tokenRef.current) setStatus(text)
+          },
+          onTime: (state) => {
+            if (token === tokenRef.current) setCurrentTime(state.currentTime)
+          },
+          onDuration: (value) => {
+            if (token === tokenRef.current) setDuration(value)
+          },
+        })
+        if (cancelled || token !== tokenRef.current) {
+          await next.destroy()
+          return
+        }
+        playerRef.current = next
+      } catch (error) {
+        if (token === tokenRef.current) setStatus(error?.message || '视频加载失败')
+      }
+    })()
+    return () => {
+      cancelled = true
+      tokenRef.current += 1
+      playerRef.current?.destroy()
+      playerRef.current = null
+    }
+  }, [src, assetBase])
+
+  function onSeek(event) {
+    const player = playerRef.current
+    if (!player || !(duration > 0)) return
+    const rect = event.currentTarget.getBoundingClientRect()
+    const ratio = Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width))
+    player.seek(ratio * duration).catch((error) => {
+      setStatus(error?.message || '跳转失败')
+    })
+  }
+
+  const played = duration ? `${Math.min(100, (currentTime / duration) * 100)}%` : '0%'
+
+  return h(
+    'div',
+    { className: 'hik-ps-react', onClick: () => playerRef.current?.toggle() },
+    h('style', null, STYLE),
+    h('div', { ref: box, className: 'hik-ps-react__stage' }),
+    status ? h('p', { className: 'hik-ps-react__status' }, status) : null,
+    h(
+      'div',
+      {
+        className: 'hik-ps-react__timeline',
+        onClick: (event) => {
+          event.stopPropagation()
+          onSeek(event)
+        },
+      },
+      h('div', { className: 'hik-ps-react__played', style: { width: played } }),
+    ),
+    h(
+      'div',
+      { className: 'hik-ps-react__time' },
+      `${formatTime(currentTime)} / ${duration ? formatTime(duration) : '--:--:--'}`,
+    ),
+  )
+}
