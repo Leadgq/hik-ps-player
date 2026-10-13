@@ -10,11 +10,19 @@
     "./vue3": "./src/vue3/index.js",
     "./react": "./src/react/index.js"
   },
+  "scripts": {
+    "dev": "vite --config playground/vite.config.ts"
+  },
   "files": [
     "src",
     "assets",
     "README.md"
   ],
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "vite": "^6.0.5",
+    "vue": "^3.5.13"
+  },
   "peerDependencies": {
     "vue": "^2.6.14 || ^3.4.0",
     "react": "^18.0.0 || ^19.0.0"
@@ -26,5 +34,8 @@
     "react": {
       "optional": true
     }
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild"]
   }
 }
