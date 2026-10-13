@@ -1,19 +1,19 @@
 import { createHikPlayer } from './player.js'
 
 const STYLE = `
-hik-ps-player { display: block; width: 100%; color: #fff; }
-.hik-ps { position: relative; width: 100%; background: #000; }
-.hik-ps__stage { width: 100%; height: 450px; }
+hik-ps-player { display: block; width: 100%; height: 100%; color: #fff; }
+.hik-ps { display: flex; flex-direction: column; position: relative; width: 100%; height: 100%; min-height: 0; background: #000; }
+.hik-ps__stage { position: relative; flex: 1; width: 100%; min-height: 0; overflow: hidden; background: #000; }
 .hik-ps__status {
-  position: absolute; left: 0; right: 0; top: 180px; margin: 0;
+  position: absolute; left: 0; right: 0; top: 40%; transform: translateY(-50%); margin: 0;
   text-align: center; pointer-events: none;
 }
 .hik-ps__timeline {
-  height: 8px; margin: 12px 12px 0; background: #d9e6f2;
+  flex-shrink: 0; height: 8px; margin: 12px 12px 0; background: #d9e6f2;
   border-radius: 4px; cursor: pointer;
 }
 .hik-ps__played { height: 100%; background: #3ba9ff; }
-.hik-ps__time { padding: 8px 12px 12px; text-align: right; font-size: 13px; }
+.hik-ps__time { flex-shrink: 0; padding: 8px 12px 12px; text-align: right; font-size: 13px; }
 `
 
 function formatTime(sec) {

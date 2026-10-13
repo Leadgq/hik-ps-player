@@ -2,31 +2,29 @@ import { createElement as h, useEffect, useRef, useState } from 'react'
 import { createHikPlayer } from '@hik-ps/core/player'
 
 const STYLE = `
-.hik-ps-react { position: relative; width: 100%; background: #000; color: #fff; }
-.hik-ps-react__stage { position: relative; width: 100%; height: 450px; overflow: hidden; background: #000; }
+.hik-ps-react { display: flex; flex-direction: column; position: relative; width: 100%; height: 100%; min-height: 0; background: #000; color: #fff; }
+.hik-ps-react__stage { position: relative; flex: 1; width: 100%; min-height: 0; overflow: hidden; background: #000; }
 .hik-ps-react__stage canvas, .hik-ps-react__stage video {
   position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important;
   margin: 0 !important; object-fit: contain;
 }
 .hik-ps-react__status {
-  position: absolute; left: 0; right: 0; top: 180px; margin: 0;
+  position: absolute; left: 0; right: 0; top: 40%; transform: translateY(-50%); margin: 0;
   text-align: center; pointer-events: none;
 }
 .hik-ps-react__timeline {
-  height: 8px; margin: 12px 12px 0; background: #d9e6f2;
+  flex-shrink: 0; height: 8px; margin: 12px 12px 0; background: #d9e6f2;
   border-radius: 4px; cursor: pointer;
 }
 .hik-ps-react__played { height: 100%; background: #3ba9ff; }
-.hik-ps-react__bar { display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 8px 12px 12px; }
+.hik-ps-react__bar { flex-shrink: 0; display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 8px 12px 12px; }
 .hik-ps-react__time { font-size: 13px; }
 .hik-ps-react__icon {
   display: flex; align-items: center; justify-content: center; width: 28px; height: 28px;
   padding: 0; border: 0; border-radius: 4px; color: #fff; background: transparent; cursor: pointer;
 }
 .hik-ps-react__icon svg { width: 22px; height: 22px; }
-.hik-ps-react:fullscreen { display: flex; flex-direction: column; width: 100%; height: 100%; background: #000; }
-.hik-ps-react:fullscreen .hik-ps-react__stage { flex: 1; height: auto; min-height: 0; }
-.hik-ps-react:fullscreen .hik-ps-react__bar, .hik-ps-react:fullscreen .hik-ps-react__timeline { flex-shrink: 0; }
+.hik-ps-react:fullscreen { width: 100%; height: 100%; background: #000; }
 `
 
 function icon(path) {

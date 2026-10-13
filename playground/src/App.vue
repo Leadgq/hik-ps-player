@@ -9,7 +9,9 @@ import { HIK_TEST_URL } from './url.js'
       <h1>hik-ps-player</h1>
       <p>MinIO 预签名 · 许昌市鄢陵县生物质高效利用项目安装工程</p>
     </header>
-    <HikPsVideo :src="HIK_TEST_URL" />
+    <div class="frame">
+      <HikPsVideo :src="HIK_TEST_URL" />
+    </div>
   </main>
 </template>
 
@@ -35,5 +37,9 @@ body {
   margin: 0 0 16px;
   color: #8aa0b5;
   font-size: 13px;
+}
+.frame {
+  width: 100%;
+  height: 520px;
 }
 </style>

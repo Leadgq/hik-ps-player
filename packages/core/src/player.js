@@ -39,6 +39,8 @@ class HikPlayer {
     this.remoteRequestId = 0
     this.remotePending = new Map()
     this.seeking = false
+    this.resizeObserver = new ResizeObserver(() => this.fitSurface())
+    this.resizeObserver.observe(this.container)
   }
 
   emitStatus(text) {
@@ -382,6 +384,8 @@ class HikPlayer {
   }
 
   async destroy() {
+    this.resizeObserver?.disconnect()
+    this.resizeObserver = null
     await this.destroyPlayer()
     if (this.container) this.container.innerHTML = ''
   }

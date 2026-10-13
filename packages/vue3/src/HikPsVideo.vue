@@ -156,15 +156,20 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .hik-ps {
+  display: flex;
+  flex-direction: column;
   position: relative;
   width: 100%;
+  height: 100%;
+  min-height: 0;
   background: #000;
   color: #fff;
 }
 .hik-ps__stage {
   position: relative;
+  flex: 1;
   width: 100%;
-  height: 450px;
+  min-height: 0;
   overflow: hidden;
   background: #000;
 }
@@ -181,12 +186,14 @@ onBeforeUnmount(() => {
   position: absolute;
   left: 0;
   right: 0;
-  top: 180px;
+  top: 40%;
+  transform: translateY(-50%);
   margin: 0;
   text-align: center;
   pointer-events: none;
 }
 .hik-ps__timeline {
+  flex-shrink: 0;
   height: 8px;
   margin: 12px 12px 0;
   background: #d9e6f2;
@@ -198,6 +205,7 @@ onBeforeUnmount(() => {
   background: #3ba9ff;
 }
 .hik-ps__bar {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -228,19 +236,8 @@ onBeforeUnmount(() => {
   background: rgba(255, 255, 255, 0.12);
 }
 .hik-ps:fullscreen {
-  display: flex;
-  flex-direction: column;
   width: 100%;
   height: 100%;
   background: #000;
-}
-.hik-ps:fullscreen .hik-ps__stage {
-  flex: 1;
-  height: auto;
-  min-height: 0;
-}
-.hik-ps:fullscreen .hik-ps__bar,
-.hik-ps:fullscreen .hik-ps__timeline {
-  flex-shrink: 0;
 }
 </style>

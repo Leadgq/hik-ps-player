@@ -1,22 +1,21 @@
 import { createHikPlayer } from '@hik-ps/core/player'
 
 const STYLE = `
-.hik-ps-vue2 { position: relative; width: 100%; background: #000; color: #fff; }
-.hik-ps-vue2__stage { width: 100%; height: 450px; }
+.hik-ps-vue2 { display: flex; flex-direction: column; position: relative; width: 100%; height: 100%; min-height: 0; background: #000; color: #fff; }
+.hik-ps-vue2__stage { position: relative; flex: 1; width: 100%; min-height: 0; overflow: hidden; background: #000; }
 .hik-ps-vue2__status {
-  position: absolute; left: 0; right: 0; top: 180px; margin: 0;
+  position: absolute; left: 0; right: 0; top: 40%; transform: translateY(-50%); margin: 0;
   text-align: center; pointer-events: none;
 }
 .hik-ps-vue2__timeline {
-  height: 8px; margin: 12px 12px 0; background: #d9e6f2;
+  flex-shrink: 0; height: 8px; margin: 12px 12px 0; background: #d9e6f2;
   border-radius: 4px; cursor: pointer;
 }
 .hik-ps-vue2__played { height: 100%; background: #3ba9ff; }
-.hik-ps-vue2__bar { display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 8px 12px 12px; }
+.hik-ps-vue2__bar { flex-shrink: 0; display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 8px 12px 12px; }
 .hik-ps-vue2__time { font-size: 13px; }
 .hik-ps-vue2__fullscreen { border: 0; border-radius: 4px; padding: 4px 10px; background: #3ba9ff; color: #fff; font-size: 13px; cursor: pointer; }
-.hik-ps-vue2:fullscreen { display: flex; flex-direction: column; width: 100%; height: 100%; background: #000; }
-.hik-ps-vue2:fullscreen .hik-ps-vue2__stage { flex: 1; height: auto; min-height: 0; }
+.hik-ps-vue2:fullscreen { width: 100%; height: 100%; background: #000; }
 `
 
 function formatTime(sec) {

@@ -8,7 +8,9 @@ export default function App() {
         <h1>hik-ps-player · React</h1>
         <p>MinIO 预签名 · 许昌市鄢陵县生物质高效利用项目安装工程</p>
       </header>
-      <HikPsVideo src={HIK_TEST_URL} />
+      <div className="frame">
+        <HikPsVideo src={HIK_TEST_URL} />
+      </div>
     </main>
   )
 }
