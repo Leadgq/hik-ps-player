@@ -1,4 +1,4 @@
-import { createHikPlayer } from '../core/player.js'
+import { createHikPlayer } from '@hik-ps/core/player'
 
 const STYLE = `
 .hik-ps-vue2 { position: relative; width: 100%; background: #000; color: #fff; }

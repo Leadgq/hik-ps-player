@@ -35,7 +35,7 @@
 
 <script setup>
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { createHikPlayer } from '../core/player.js'
+import { createHikPlayer } from '@hik-ps/core/player'
 
 const props = defineProps({
   src: { type: String, default: '' },

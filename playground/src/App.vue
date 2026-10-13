@@ -1,5 +1,5 @@
 <script setup>
-import HikPsVideo from '../../src/vue3/HikPsVideo.vue'
+import { HikPsVideo } from '@hik-ps/vue3'
 import { HIK_TEST_URL } from './url.js'
 </script>
 

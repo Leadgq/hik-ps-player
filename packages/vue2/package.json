@@ -1,0 +1,25 @@
+{
+  "name": "@hik-ps/vue2",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "scripts": {
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@hik-ps/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "vue": "^2.6.14"
+  },
+  "peerDependenciesMeta": {
+    "vue": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "vite": "^6.0.5"
+  }
+}

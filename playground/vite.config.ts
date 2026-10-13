@@ -9,8 +9,14 @@ export default defineConfig({
   root: playgroundRoot,
   plugins: [vue()],
   publicDir: path.resolve(playgroundRoot, '../assets'),
+  optimizeDeps: {
+    exclude: ['@hik-ps/vue3', '@hik-ps/core'],
+  },
   server: {
     port: 5188,
     host: '127.0.0.1',
+    fs: {
+      allow: [path.resolve(playgroundRoot, '..')],
+    },
   },
 })

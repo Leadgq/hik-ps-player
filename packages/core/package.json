@@ -1,0 +1,15 @@
+{
+  "name": "@hik-ps/core",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js",
+    "./player": "./src/player.js"
+  },
+  "scripts": {
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "vite": "^6.0.5"
+  }
+}

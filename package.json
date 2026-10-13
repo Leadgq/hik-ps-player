@@ -3,29 +3,33 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@10.30.3",
   "description": "海康 IMKH + MPEG-PS 按需播放。浏览器内拆包解码，支持预签名 URL 远端跳转。",
   "exports": {
-    ".": "./src/core/index.js",
-    "./vue2": "./src/vue2/index.js",
-    "./vue3": "./src/vue3/index.js",
-    "./react": "./src/react/index.js"
+    ".": "./packages/core/dist/index.js",
+    "./vue2": "./packages/vue2/dist/index.js",
+    "./vue3": "./packages/vue3/dist/index.js",
+    "./react": "./packages/react/dist/index.js"
   },
   "scripts": {
-    "dev": "vite --config playground/vite.config.ts"
+    "dev": "pnpm --filter @hik-ps/playground dev",
+    "dev:react": "pnpm --filter @hik-ps/playground-react dev",
+    "build": "turbo run build"
   },
   "files": [
-    "src",
+    "packages/core/dist",
+    "packages/vue2/dist",
+    "packages/vue3/dist",
+    "packages/react/dist",
     "assets",
     "README.md"
   ],
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.2.1",
-    "vite": "^6.0.5",
-    "vue": "^3.5.13"
+    "turbo": "^2.5.4"
   },
   "peerDependencies": {
-    "vue": "^2.6.14 || ^3.4.0",
-    "react": "^18.0.0 || ^19.0.0"
+    "react": "^18.0.0 || ^19.0.0",
+    "vue": "^2.6.14 || ^3.4.0"
   },
   "peerDependenciesMeta": {
     "vue": {
