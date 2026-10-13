@@ -8,10 +8,7 @@ const playgroundRoot = path.dirname(fileURLToPath(import.meta.url))
 export default defineConfig({
   root: playgroundRoot,
   plugins: [vue()],
-  publicDir: path.resolve(playgroundRoot, '../assets'),
-  optimizeDeps: {
-    exclude: ['@hik-ps/vue3', '@hik-ps/core'],
-  },
+  publicDir: path.resolve(playgroundRoot, '../dist'),
   server: {
     port: 5188,
     host: '127.0.0.1',

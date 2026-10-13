@@ -1,12 +1,12 @@
 <script setup>
-import { HikPsVideo } from '@hik-ps/vue3'
+import { HikPsVideo } from '../../dist/vue3.js'
 import { HIK_TEST_URL } from './url.js'
 </script>
 
 <template>
   <main class="page">
     <header class="page__head">
-      <h1>hik-ps-player</h1>
+      <h1>hik-ps-player · dist/vue3</h1>
       <p>MinIO 预签名 · 许昌市鄢陵县生物质高效利用项目安装工程</p>
     </header>
     <div class="frame">

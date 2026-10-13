@@ -1,26 +1,23 @@
 {
   "name": "hik-ps-player",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "type": "module",
   "packageManager": "pnpm@10.30.3",
   "description": "海康 IMKH + MPEG-PS 按需播放。浏览器内拆包解码，支持预签名 URL 远端跳转。",
   "exports": {
-    ".": "./packages/core/dist/index.js",
-    "./vue2": "./packages/vue2/dist/index.js",
-    "./vue3": "./packages/vue3/dist/index.js",
-    "./react": "./packages/react/dist/index.js"
+    ".": "./dist/index.js",
+    "./vue2": "./dist/vue2.js",
+    "./vue3": "./dist/vue3.js",
+    "./react": "./dist/react.js"
   },
   "scripts": {
     "dev": "pnpm --filter @hik-ps/playground dev",
     "dev:react": "pnpm --filter @hik-ps/playground-react dev",
-    "build": "turbo run build"
+    "build": "turbo run build && node scripts/collect-dist.mjs"
   },
   "files": [
-    "packages/core/dist",
-    "packages/vue2/dist",
-    "packages/vue3/dist",
-    "packages/react/dist",
+    "dist",
     "assets",
     "README.md"
   ],
