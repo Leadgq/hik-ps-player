@@ -34,6 +34,7 @@
   "scripts": {
     "dev": "pnpm --filter @hik-ps/playground dev",
     "dev:react": "pnpm --filter @hik-ps/playground-react dev",
+    "all": "pnpm --filter @hik-ps/playground --filter @hik-ps/playground-react --parallel dev",
     "build": "turbo run build && node scripts/collect-dist.mjs",
     "test:types": "tsc -p tests/types/tsconfig.core.json && tsc -p tests/types/tsconfig.react.json && tsc -p tests/types/tsconfig.vue2.json && vue-tsc -p tests/types/tsconfig.vue3.json",
     "prepublishOnly": "pnpm build"
