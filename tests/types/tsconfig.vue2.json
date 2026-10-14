@@ -1,0 +1,5 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": { "paths": { "vue": ["../../packages/vue2/node_modules/vue"] } },
+  "include": ["vue2.ts"]
+}

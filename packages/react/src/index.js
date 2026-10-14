@@ -39,6 +39,11 @@ function formatTime(sec) {
   return [hours, minutes, seconds].map((n) => String(n).padStart(2, '0')).join(':')
 }
 
+/**
+ * @typedef {import('@hik-ps/core').HikPsVideoProps} HikPsVideoProps
+ * @param {HikPsVideoProps} props
+ * @returns {import('react').ReactElement}
+ */
 export function HikPsVideo({ src = '', assetBase = '/h265web/', watermark = '' }) {
   const box = useRef(null)
   const playerRef = useRef(null)

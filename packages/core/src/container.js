@@ -1,3 +1,4 @@
+/** @param {Uint8Array} bytes @returns {import('./types.js').HikContainerInfo} */
 export function identifyContainer(bytes) {
   if (bytes[4] === 0x66 && bytes[5] === 0x74 && bytes[6] === 0x79 && bytes[7] === 0x70) {
     return { isPs: false, description: '标准 MP4 / MOV' }
@@ -17,6 +18,7 @@ export function identifyContainer(bytes) {
   return { isPs: false, description: '按扩展名识别' }
 }
 
+/** @param {string} url @returns {Promise<import('./types.js').HikContainerInfo>} */
 export async function inspectRemoteContainer(url) {
   const controller = new AbortController()
   const timer = setTimeout(() => controller.abort(), 15000)

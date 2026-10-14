@@ -6,7 +6,7 @@
     ".": "./src/index.js"
   },
   "scripts": {
-    "build": "vite build"
+    "build": "vite build && vue-tsc -p tsconfig.types.json"
   },
   "dependencies": {
     "@hik-ps/core": "workspace:*"

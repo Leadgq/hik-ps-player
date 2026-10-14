@@ -6,6 +6,8 @@ import { resolveWatermarkStyle } from './watermark.js'
 /**
  * 打开一个海康 PS / 普通 MP4 地址。
  * PS 按 Range 分段读取，跳转不改预签名 URL。
+ * @param {import('./types.js').HikPlayerOptions} options
+ * @returns {Promise<import('./types.js').HikPlayer>}
  */
 export function createHikPlayer(options) {
   const player = new HikPlayer(options)
@@ -13,6 +15,7 @@ export function createHikPlayer(options) {
 }
 
 class HikPlayer {
+  /** @param {Partial<import('./types.js').HikPlayerOptions>} [options] */
   constructor({ container, url, assetBase = '/h265web/', watermark, onTime, onDuration, onStatus, onReady } = {}) {
     if (!container) throw new Error('缺少播放容器')
     if (!url) throw new Error('缺少视频地址')
@@ -108,6 +111,7 @@ class HikPlayer {
     this.watermarkEl.style.display = ''
   }
 
+  /** @param {import('./types.js').HikWatermark} [watermark] */
   setWatermark(watermark) {
     this.watermark = watermark
     this.applyWatermark()
@@ -260,6 +264,7 @@ class HikPlayer {
     else this.play()
   }
 
+  /** @returns {void | Promise<void>} */
   play() {
     if (this.mediaEl) return this.mediaEl.play()
     this.h265?.play()
@@ -287,6 +292,7 @@ class HikPlayer {
     this.seek(this.currentTime + step).catch(() => {})
   }
 
+  /** @param {number} seconds @returns {Promise<void>} */
   async seek(seconds) {
     if (!(this.duration > 0) || this.seeking) return
     const target = Math.max(0, Math.min(this.duration - 0.1, Number(seconds) || 0))

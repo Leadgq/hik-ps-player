@@ -14,6 +14,8 @@ function escapeXml(text) {
 /**
  * 平铺文字水印。不传或空字符串则没有水印。
  * watermark 可以是字符串，或 { text, gap, fontSize, color }。
+ * @param {import('./types.js').HikWatermark} [watermark]
+ * @returns {{ backgroundImage: string, backgroundRepeat: string } | null}
  */
 export function resolveWatermarkStyle(watermark) {
   const text = watermarkText(watermark)

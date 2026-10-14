@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": { "paths": { "vue": ["../../packages/vue3/node_modules/vue"] } },
+  "include": ["vue3.ts", "vue3.vue"],
+  "vueCompilerOptions": { "target": 3, "strictTemplates": true }
+}

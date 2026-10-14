@@ -64,6 +64,7 @@ export class HikPsPlayerElement extends HTMLElement {
     return this.getAttribute('src') || ''
   }
 
+  /** @param {string} value */
   set src(value) {
     if (value) this.setAttribute('src', value)
     else this.removeAttribute('src')
@@ -73,14 +74,17 @@ export class HikPsPlayerElement extends HTMLElement {
     return this.getAttribute('asset-base') || '/h265web/'
   }
 
+  /** @param {string} value */
   set assetBase(value) {
     this.setAttribute('asset-base', value || '/h265web/')
   }
 
+  /** @returns {string} */
   get watermark() {
     return this.getAttribute('watermark') || ''
   }
 
+  /** @param {import('./types.js').HikWatermark} value */
   set watermark(value) {
     if (value) this.setAttribute('watermark', typeof value === 'string' ? value : JSON.stringify(value))
     else this.removeAttribute('watermark')

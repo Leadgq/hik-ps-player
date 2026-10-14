@@ -1,0 +1,6 @@
+{
+  "extends": "../../tsconfig.types.json",
+  "compilerOptions": { "rootDir": "src", "outDir": "dist/types" },
+  "include": ["src/**/*.js", "src/**/*.vue"],
+  "vueCompilerOptions": { "target": 3 }
+}

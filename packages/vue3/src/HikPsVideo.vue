@@ -40,7 +40,7 @@ import { createHikPlayer } from '@hik-ps/core/player'
 const props = defineProps({
   src: { type: String, default: '' },
   assetBase: { type: String, default: '/h265web/' },
-  watermark: { type: [String, Object], default: '' },
+  watermark: { type: /** @type {import('vue').PropType<import('@hik-ps/core').HikWatermark>} */ ([String, Object]), default: '' },
 })
 
 const root = ref(null)

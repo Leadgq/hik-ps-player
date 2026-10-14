@@ -2,6 +2,16 @@ import { resolveAssetPaths } from './paths.js'
 
 const cache = new Map()
 
+/**
+ * SDK 实例的基础播放接口；SDK 内部字段不作为库的公共接口。
+ * @typedef {object} H265Player
+ * @property {(options: ReturnType<typeof h265BuildOptions> & { format_type?: string }) => void} build
+ * @property {(url: string) => void} load_media
+ * @property {() => void} play
+ * @property {() => void} pause
+ * @property {(done?: () => void) => void} release
+ */
+
 function loadScript(src) {
   return new Promise((resolve, reject) => {
     const existed = document.querySelector(`script[src="${src}"]`)
@@ -38,6 +48,7 @@ function bucket(assetBase) {
   return state
 }
 
+/** @param {string} [assetBase] @returns {Promise<() => H265Player>} */
 export async function getDefaultPlayerFactory(assetBase) {
   const state = bucket(assetBase)
   if (state.defaultFactory) return state.defaultFactory
@@ -56,6 +67,7 @@ export async function getDefaultPlayerFactory(assetBase) {
   })
 }
 
+/** @param {string} [assetBase] @returns {Promise<() => H265Player>} */
 export async function getPsPlayerFactory(assetBase) {
   const state = bucket(assetBase)
   if (state.psFactory) return state.psFactory
@@ -77,10 +89,12 @@ export async function getPsPlayerFactory(assetBase) {
   })
 }
 
+/** @param {boolean} isPs @param {string} [assetBase] @returns {Promise<H265Player>} */
 export function createH265Player(isPs, assetBase) {
   return (isPs ? getPsPlayerFactory(assetBase) : getDefaultPlayerFactory(assetBase)).then((factory) => factory())
 }
 
+/** @param {string} playerId @param {string} [assetBase] */
 export function h265BuildOptions(playerId, assetBase) {
   const { sdkDir } = resolveAssetPaths(assetBase)
   return {

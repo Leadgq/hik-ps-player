@@ -26,12 +26,15 @@ function formatTime(sec) {
   return [hours, minutes, seconds].map((n) => String(n).padStart(2, '0')).join(':')
 }
 
-export const HikPsVideo = {
+/**
+ * @typedef {import('@hik-ps/core').HikPsVideoProps} HikPsVideoProps
+ */
+const component = {
   name: 'HikPsVideo',
   props: {
     src: { type: String, default: '' },
     assetBase: { type: String, default: '/h265web/' },
-    watermark: { type: [String, Object], default: '' },
+    watermark: { type: /** @type {import('vue').PropType<HikPsVideoProps['watermark']>} */ ([String, Object]), default: '' },
   },
   data() {
     return {
@@ -158,3 +161,6 @@ export const HikPsVideo = {
     ])
   },
 }
+
+/** @type {import('vue').ComponentOptions<import('vue').default, ReturnType<typeof component.data>, typeof component.methods, {}, typeof component.props, HikPsVideoProps>} */
+export const HikPsVideo = component

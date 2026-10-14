@@ -1,3 +1,4 @@
+export * from './types.js'
 export { identifyContainer, inspectRemoteContainer } from './container.js'
 export { resolveAssetPaths } from './paths.js'
 export { createH265Player, h265BuildOptions, getPsPlayerFactory } from './sdk.js'

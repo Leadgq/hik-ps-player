@@ -3,11 +3,17 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.js",
-    "./player": "./src/player.js"
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./player": {
+      "types": "./dist/types/player.d.ts",
+      "default": "./src/player.js"
+    }
   },
   "scripts": {
-    "build": "vite build"
+    "build": "vite build && tsc -p tsconfig.types.json"
   },
   "devDependencies": {
     "vite": "^6.0.5"
