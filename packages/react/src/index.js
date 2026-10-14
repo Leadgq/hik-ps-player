@@ -39,7 +39,7 @@ function formatTime(sec) {
   return [hours, minutes, seconds].map((n) => String(n).padStart(2, '0')).join(':')
 }
 
-export function HikPsVideo({ src = '', assetBase = '/h265web/' }) {
+export function HikPsVideo({ src = '', assetBase = '/h265web/', watermark = '' }) {
   const box = useRef(null)
   const playerRef = useRef(null)
   const tokenRef = useRef(0)
@@ -65,6 +65,7 @@ export function HikPsVideo({ src = '', assetBase = '/h265web/' }) {
           container: box.current,
           url: src,
           assetBase,
+          watermark,
           onStatus: (text) => {
             if (token === tokenRef.current) setStatus(text)
           },
@@ -93,6 +94,10 @@ export function HikPsVideo({ src = '', assetBase = '/h265web/' }) {
       playerRef.current = null
     }
   }, [src, assetBase])
+
+  useEffect(() => {
+    playerRef.current?.setWatermark(watermark)
+  }, [watermark])
 
   useEffect(() => {
     let timer = 0

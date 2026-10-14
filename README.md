@@ -22,7 +22,7 @@ import { HikPsVideo } from 'hik-ps-player/vue3'
 
 <template>
   <div style="width: 100%; height: 500px">
-    <HikPsVideo :src="url" />
+    <HikPsVideo :src="url" watermark="张三" />
   </div>
 </template>
 ```
@@ -66,6 +66,8 @@ player.toggle()
 await player.seek(30)
 player.destroy()
 ```
+
+`watermark` 默认没有。传字符串，或 `{ text, gap, fontSize, color }`。
 
 播放中左右方向键各跳 10 秒：右键前进，左键后退。输入框里打字不会触发。
 

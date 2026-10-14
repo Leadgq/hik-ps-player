@@ -40,6 +40,7 @@ import { createHikPlayer } from '@hik-ps/core/player'
 const props = defineProps({
   src: { type: String, default: '' },
   assetBase: { type: String, default: '/h265web/' },
+  watermark: { type: [String, Object], default: '' },
 })
 
 const root = ref(null)
@@ -76,6 +77,7 @@ async function open(url) {
       container: box.value,
       url,
       assetBase: props.assetBase,
+      watermark: props.watermark,
       onStatus: (text) => {
         if (token === openToken) status.value = text
       },
@@ -143,6 +145,7 @@ onMounted(() => {
   window.addEventListener('resize', scheduleFit)
 })
 watch(() => props.src, (url) => open(url))
+watch(() => props.watermark, (value) => player?.setWatermark(value))
 
 onBeforeUnmount(() => {
   document.removeEventListener('fullscreenchange', syncFullscreen)

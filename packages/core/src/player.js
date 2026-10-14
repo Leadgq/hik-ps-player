@@ -1,6 +1,7 @@
 import { resolveAssetPaths } from './paths.js'
 import { inspectRemoteContainer } from './container.js'
 import { createH265Player, h265BuildOptions } from './sdk.js'
+import { resolveWatermarkStyle } from './watermark.js'
 
 /**
  * 打开一个海康 PS / 普通 MP4 地址。
@@ -12,12 +13,14 @@ export function createHikPlayer(options) {
 }
 
 class HikPlayer {
-  constructor({ container, url, assetBase = '/h265web/', onTime, onDuration, onStatus, onReady } = {}) {
+  constructor({ container, url, assetBase = '/h265web/', watermark, onTime, onDuration, onStatus, onReady } = {}) {
     if (!container) throw new Error('缺少播放容器')
     if (!url) throw new Error('缺少视频地址')
     this.container = container
     this.url = url
     this.assetBase = assetBase
+    this.watermark = watermark
+    this.watermarkEl = null
     this.onTime = onTime
     this.onDuration = onDuration
     this.onStatus = onStatus
@@ -81,6 +84,33 @@ class HikPlayer {
     surface.style.cssText = 'position:relative;width:100%;height:100%;background:#000;'
     this.container.appendChild(surface)
     this.surface = surface
+    this.applyWatermark()
+  }
+
+  applyWatermark() {
+    const style = resolveWatermarkStyle(this.watermark)
+    if (!style) {
+      this.watermarkEl?.remove()
+      this.watermarkEl = null
+      return
+    }
+    if (getComputedStyle(this.container).position === 'static') {
+      this.container.style.position = 'relative'
+    }
+    if (!this.watermarkEl || this.watermarkEl.parentNode !== this.container) {
+      const layer = document.createElement('div')
+      layer.style.cssText = 'position:absolute;inset:0;pointer-events:none;z-index:10;'
+      this.container.appendChild(layer)
+      this.watermarkEl = layer
+    }
+    this.watermarkEl.style.backgroundImage = style.backgroundImage
+    this.watermarkEl.style.backgroundRepeat = style.backgroundRepeat
+    this.watermarkEl.style.display = ''
+  }
+
+  setWatermark(watermark) {
+    this.watermark = watermark
+    this.applyWatermark()
   }
 
   mountNative(token, url) {

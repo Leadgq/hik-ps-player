@@ -30,7 +30,7 @@ function formatTime(sec) {
  */
 export class HikPsPlayerElement extends HTMLElement {
   static get observedAttributes() {
-    return ['src', 'asset-base']
+    return ['src', 'asset-base', 'watermark']
   }
 
   constructor() {
@@ -77,6 +77,15 @@ export class HikPsPlayerElement extends HTMLElement {
     this.setAttribute('asset-base', value || '/h265web/')
   }
 
+  get watermark() {
+    return this.getAttribute('watermark') || ''
+  }
+
+  set watermark(value) {
+    if (value) this.setAttribute('watermark', typeof value === 'string' ? value : JSON.stringify(value))
+    else this.removeAttribute('watermark')
+  }
+
   connectedCallback() {
     this.open(this.src)
   }
@@ -91,6 +100,7 @@ export class HikPsPlayerElement extends HTMLElement {
   attributeChangedCallback(name, oldValue, newValue) {
     if (!this.isConnected || oldValue === newValue) return
     if (name === 'src' || name === 'asset-base') this.open(this.src)
+    if (name === 'watermark') this.player?.setWatermark(this.watermark)
   }
 
   syncBar() {
@@ -118,6 +128,7 @@ export class HikPsPlayerElement extends HTMLElement {
         container: this.stage,
         url,
         assetBase: this.assetBase,
+        watermark: this.watermark,
         onStatus: (text) => {
           if (token === this.openToken) this.setStatus(text)
         },

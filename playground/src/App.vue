@@ -1,16 +1,26 @@
 <script setup>
+import { ref } from 'vue'
 import { HikPsVideo } from '../../dist/vue3.js'
 import { HIK_TEST_URL } from './url.js'
+
+const watermark = ref('水印测试')
+
+function toggleWatermark() {
+  watermark.value = watermark.value ? '' : '水印测试'
+}
 </script>
 
 <template>
   <main class="page">
     <header class="page__head">
       <h1>hik-ps-player · dist/vue3</h1>
-      <p>MinIO 预签名 · 许昌市鄢陵县生物质高效利用项目安装工程</p>
+      <p>默认没有水印。当前：{{ watermark || '关闭' }}</p>
+      <button type="button" class="page__toggle" @click="toggleWatermark">
+        {{ watermark ? '关闭水印' : '打开水印' }}
+      </button>
     </header>
     <div class="frame">
-      <HikPsVideo :src="HIK_TEST_URL" />
+      <HikPsVideo :src="HIK_TEST_URL" :watermark="watermark" />
     </div>
   </main>
 </template>
@@ -34,9 +44,18 @@ body {
   font-weight: 600;
 }
 .page__head p {
-  margin: 0 0 16px;
+  margin: 0 0 12px;
   color: #8aa0b5;
   font-size: 13px;
+}
+.page__toggle {
+  margin-bottom: 16px;
+  border: 0;
+  border-radius: 4px;
+  padding: 6px 12px;
+  background: #3ba9ff;
+  color: #fff;
+  cursor: pointer;
 }
 .frame {
   width: 100%;

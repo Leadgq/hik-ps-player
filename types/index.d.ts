@@ -9,10 +9,20 @@ export interface HikTimeState {
   playing: boolean
 }
 
+export interface HikWatermarkOption {
+  text?: string
+  gap?: number
+  fontSize?: number
+  color?: string
+}
+
+export type HikWatermark = string | HikWatermarkOption
+
 export interface HikPlayerOptions {
   container: HTMLElement
   url: string
   assetBase?: string
+  watermark?: HikWatermark
   onTime?: (state: HikTimeState) => void
   onDuration?: (value: number) => void
   onStatus?: (text: string) => void
@@ -28,6 +38,7 @@ export interface HikPlayer {
   play(): void | Promise<void>
   pause(): void
   seek(seconds: number): Promise<void>
+  setWatermark(watermark?: HikWatermark): void
   fitSurface(): void
   destroy(): Promise<void>
 }
@@ -39,8 +50,13 @@ export function resolveAssetPaths(assetBase?: string): {
   sdkDir: string
   remoteWorker: string
 }
+export function resolveWatermarkStyle(watermark?: HikWatermark): {
+  backgroundImage: string
+  backgroundRepeat: string
+} | null
 export function createHikPlayer(options: HikPlayerOptions): Promise<HikPlayer>
 export class HikPsPlayerElement extends HTMLElement {
   src: string
   assetBase: string
+  watermark: string
 }

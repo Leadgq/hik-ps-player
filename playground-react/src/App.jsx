@@ -9,7 +9,7 @@ export default function App() {
         <p>MinIO 预签名 · 许昌市鄢陵县生物质高效利用项目安装工程</p>
       </header>
       <div className="frame">
-        <HikPsVideo src={HIK_TEST_URL} />
+        <HikPsVideo src={HIK_TEST_URL} watermark="水印测试" />
       </div>
     </main>
   )

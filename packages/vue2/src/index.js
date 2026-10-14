@@ -31,6 +31,7 @@ export const HikPsVideo = {
   props: {
     src: { type: String, default: '' },
     assetBase: { type: String, default: '/h265web/' },
+    watermark: { type: [String, Object], default: '' },
   },
   data() {
     return {
@@ -65,6 +66,9 @@ export const HikPsVideo = {
     assetBase() {
       this.open(this.src)
     },
+    watermark(value) {
+      this.player?.setWatermark(value)
+    },
   },
   methods: {
     async open(url) {
@@ -80,6 +84,7 @@ export const HikPsVideo = {
           container: this.$refs.box,
           url,
           assetBase: this.assetBase,
+          watermark: this.watermark,
           onStatus: (text) => {
             if (token === this.openToken) this.status = text
           },
