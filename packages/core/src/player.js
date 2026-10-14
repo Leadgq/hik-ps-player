@@ -41,6 +41,8 @@ class HikPlayer {
     this.seeking = false
     this.resizeObserver = new ResizeObserver(() => this.fitSurface())
     this.resizeObserver.observe(this.container)
+    this.onKeySeek = (event) => this.handleKeySeek(event)
+    document.addEventListener('keydown', this.onKeySeek)
   }
 
   emitStatus(text) {
@@ -242,6 +244,19 @@ class HikPlayer {
     this.syncClock()
   }
 
+  handleKeySeek(event) {
+    if (!this.container?.isConnected) return
+    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return
+    const target = event.target
+    if (target instanceof HTMLElement) {
+      const tag = target.tagName
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target.isContentEditable) return
+    }
+    event.preventDefault()
+    const step = event.key === 'ArrowRight' ? 10 : -10
+    this.seek(this.currentTime + step).catch(() => {})
+  }
+
   async seek(seconds) {
     if (!(this.duration > 0) || this.seeking) return
     const target = Math.max(0, Math.min(this.duration - 0.1, Number(seconds) || 0))
@@ -384,6 +399,10 @@ class HikPlayer {
   }
 
   async destroy() {
+    if (this.onKeySeek) {
+      document.removeEventListener('keydown', this.onKeySeek)
+      this.onKeySeek = null
+    }
     this.resizeObserver?.disconnect()
     this.resizeObserver = null
     await this.destroyPlayer()

@@ -1,5 +1,7 @@
 # hik-ps-player
 
+MIT License. See [LICENSE](./LICENSE).
+
 海康 IMKH + MPEG-PS 按需播放。浏览器内拆包、WASM 解 H.265，预签名 URL 用 Range 分段读取，跳转不改 URL。播放核心不依赖 Vue 或 React。
 
 安装后包里是两块：
@@ -64,5 +66,7 @@ player.toggle()
 await player.seek(30)
 player.destroy()
 ```
+
+播放中左右方向键各跳 10 秒：右键前进，左键后退。输入框里打字不会触发。
 
 服务器需要 CORS，并允许 Range，响应 206，暴露 `Content-Range`。
